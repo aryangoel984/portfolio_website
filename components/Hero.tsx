@@ -64,10 +64,10 @@ function AnimatedCounter({
 
 /* ── Stat card ───────────────────────────────────────────── */
 const stats = [
-  { value: 370, suffix: "+", label: "LeetCode Solved" },
-  { value: 4,   suffix: "×", label: "Hackathon Awards" },
-  { value: 3,   suffix: "",  label: "Live Products"    },
-  { value: 8,   suffix: ".73", label: "CGPA at DTU"   },
+  { value: 400, suffix: "+", label: "LeetCode Solved" },
+  { value: 4, suffix: "×", label: "Hackathon Awards" },
+  { value: 3, suffix: "", label: "Live Products" },
+  { value: 8, suffix: ".74", label: "CGPA at DTU" },
 ] as const;
 
 /* ── Component ───────────────────────────────────────────── */

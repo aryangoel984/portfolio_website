@@ -10,7 +10,7 @@ export const education: EducationItem[] = [
     institution: "Delhi Technological University",
     degree: "B.Tech, Information Technology",
     duration: "2023 – 2027",
-    score: "CGPA: 8.73",
+    score: "CGPA: 8.74",
   },
   {
     institution: "NK Bagrodia Public School",

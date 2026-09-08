@@ -11,7 +11,7 @@ export const experience: ExperienceItem[] = [
   {
     company: "AiRo Digital Labs",
     role: "Software Engineering Intern",
-    duration: "May 2026 – Present",
+    duration: "May 2026 – July 2026",
     type: "Internship",
     bullets: [
       "Contributed to the development of an AI-powered chatbot backend using Python, FastAPI, and LangGraph, working on a RAG (Retrieval Augmented Generation) pipeline that retrieves context from a knowledge base and generates accurate, context-aware responses using a large language model.",
