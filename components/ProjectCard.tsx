@@ -1,4 +1,5 @@
 import type { OtherProject } from "@/data/projects";
+import TiltCard from "@/components/TiltCard";
 
 export default function ProjectCard({
   project,
@@ -8,7 +9,10 @@ export default function ProjectCard({
   index: number;
 }) {
   return (
-    <article className="border-t border-border py-10 first:border-t-0 first:pt-0">
+    <TiltCard
+      max={1.5}
+      className="mt-5 rounded-xl border border-border bg-card px-6 py-8 first:mt-0 sm:px-8"
+    >
       <div className="grid sm:grid-cols-[4rem_1fr_auto] sm:gap-8">
         <p className="mb-4 font-mono text-xs tracking-[0.16em] text-accent sm:mb-0 sm:pt-1">
           {String(index).padStart(2, "0")}
@@ -35,9 +39,16 @@ export default function ProjectCard({
             </ul>
           )}
 
-          <p className="mt-5 text-xs font-medium uppercase tracking-[0.1em] text-muted/80">
-            {project.techStack.join("  ·  ")}
-          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="skill-tag inline-flex items-center rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground/80"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
 
         <a
@@ -49,6 +60,6 @@ export default function ProjectCard({
           View Code →
         </a>
       </div>
-    </article>
+    </TiltCard>
   );
 }

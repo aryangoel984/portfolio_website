@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { skills } from "@/data/skills";
+import TiltCard from "@/components/TiltCard";
 
 type CategoryKey = keyof typeof skills;
 
@@ -14,25 +15,25 @@ const categories: {
     key: "languages",
     label: "Languages",
     tagClass:
-      "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400 hover:bg-blue-100",
+      "border-sky-500/25 bg-sky-500/10 text-sky-300 hover:border-sky-400/50 hover:bg-sky-500/15",
   },
   {
     key: "frameworks",
     label: "Frameworks",
     tagClass:
-      "border-violet-200 bg-violet-50 text-violet-700 hover:border-violet-400 hover:bg-violet-100",
+      "border-violet-500/25 bg-violet-500/10 text-violet-300 hover:border-violet-400/50 hover:bg-violet-500/15",
   },
   {
     key: "databases",
     label: "Databases",
     tagClass:
-      "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-400 hover:bg-emerald-100",
+      "border-emerald-500/25 bg-emerald-500/10 text-emerald-300 hover:border-emerald-400/50 hover:bg-emerald-500/15",
   },
   {
     key: "tools",
     label: "Tools and Cloud",
     tagClass:
-      "border-orange-200 bg-orange-50 text-orange-700 hover:border-orange-400 hover:bg-orange-100",
+      "border-orange-500/25 bg-orange-500/10 text-orange-300 hover:border-orange-400/50 hover:bg-orange-500/15",
   },
   {
     key: "coreSubjects",
@@ -58,7 +59,7 @@ export default function SkillsSection() {
           onClick={() => setActive("all")}
           className={`rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-150 ${
             active === "all"
-              ? "border-accent bg-accent text-white shadow-sm shadow-accent/30"
+              ? "border-accent bg-accent text-background shadow-sm shadow-accent/30"
               : "border-border bg-card text-muted hover:border-accent/40 hover:text-foreground"
           }`}
         >
@@ -70,7 +71,7 @@ export default function SkillsSection() {
             onClick={() => setActive(active === cat.key ? "all" : cat.key)}
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-150 ${
               active === cat.key
-                ? "border-accent bg-accent text-white shadow-sm shadow-accent/30"
+                ? "border-accent bg-accent text-background shadow-sm shadow-accent/30"
                 : "border-border bg-card text-muted hover:border-accent/40 hover:text-foreground"
             }`}
           >
@@ -82,9 +83,10 @@ export default function SkillsSection() {
       {/* Skill groups */}
       <div className="space-y-5">
         {visible.map((cat) => (
-          <div
+          <TiltCard
             key={cat.key}
-            className="card-lift rounded-xl border border-border bg-card p-5 sm:p-6"
+            max={1.5}
+            className="rounded-xl border border-border bg-card p-5 sm:p-6"
           >
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
               {cat.label}
@@ -99,7 +101,7 @@ export default function SkillsSection() {
                 </span>
               ))}
             </div>
-          </div>
+          </TiltCard>
         ))}
       </div>
 

@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import FeaturedProjectCard from "@/components/FeaturedProjectCard";
 import ExperienceItem from "@/components/ExperienceItem";
 import Reveal from "@/components/Reveal";
+import Magnetic from "@/components/Magnetic";
 import { featuredProjects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { siteConfig } from "@/data/siteConfig";
@@ -89,11 +90,16 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────── */}
-      <section className="border-t border-border bg-card">
-        <div className="container-site section-pad">
+      <section className="relative overflow-hidden border-t border-border bg-background-alt">
+        <div
+          className="dot-grid pointer-events-none absolute inset-0 opacity-20"
+          aria-hidden="true"
+        />
+        <div className="container-site section-pad relative">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <p className="page-eyebrow justify-center">Let&apos;s build something</p>
+              <h2 className="gradient-text mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
                 Open to Software Engineer roles
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted [text-wrap:pretty]">
@@ -101,12 +107,15 @@ export default function HomePage() {
                 Based in Delhi, open to remote and hybrid opportunities.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25"
-                >
-                  Get in Touch
-                </Link>
+                <Magnetic>
+                  <Link
+                    href="/contact"
+                    className="magnetic inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-background transition-all duration-200 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25"
+                  >
+                    Get in Touch
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </Magnetic>
                 <a
                   href={siteConfig.resumeUrl}
                   target="_blank"

@@ -1,4 +1,5 @@
 import type { ExperienceItem as ExperienceItemType } from "@/data/experience";
+import TiltCard from "@/components/TiltCard";
 
 export default function ExperienceItem({
   item,
@@ -6,18 +7,21 @@ export default function ExperienceItem({
   item: ExperienceItemType;
 }) {
   return (
-    <article className="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <TiltCard
+      max={2}
+      className="overflow-hidden rounded-xl border border-border bg-card"
+    >
       {/* Left accent bar */}
       <div
-        className="absolute bottom-0 left-0 top-0 w-1"
+        className="absolute bottom-0 left-0 top-0 w-1 rounded-l-xl"
         style={{
           background:
-            "linear-gradient(to bottom, var(--accent) 0%, rgba(22,58,95,0.15) 100%)",
+            "linear-gradient(to bottom, var(--accent) 0%, rgba(79,200,255,0.1) 100%)",
         }}
         aria-hidden="true"
       />
 
-      <div className="px-6 py-6 pl-8 sm:px-8 sm:py-8 sm:pl-10">
+      <div className="relative px-6 py-6 pl-8 sm:px-8 sm:py-8 sm:pl-10">
         {/* Header row */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -78,6 +82,6 @@ export default function ExperienceItem({
           </div>
         )}
       </div>
-    </article>
+    </TiltCard>
   );
 }

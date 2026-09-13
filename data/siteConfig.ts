@@ -16,6 +16,7 @@ Beyond development, I compete in hackathons, practice data structures and algori
   github: "https://github.com/aryangoel984",
   leetcode: "https://leetcode.com/u/codearygo985/",
   leetcodeStats: "400+ problems solved",
-  resumeUrl: "/resume.pdf",
+  resumeUrl:
+    "https://drive.google.com/drive/folders/1kXkk2q3CzIdQwPD2CXGWWDd2oEhGPsKZ?usp=sharing",
   headshot: "/images/headshot.jpg",
 };

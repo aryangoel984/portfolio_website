@@ -1,8 +1,12 @@
 import type { Achievement } from "@/data/achievements";
+import TiltCard from "@/components/TiltCard";
 
 export default function AchievementItem({ item }: { item: Achievement }) {
   return (
-    <article className="border-b border-border py-8 last:border-b-0">
+    <TiltCard
+      max={1.5}
+      className="mt-5 rounded-xl border border-border bg-card px-6 py-8 first:mt-0 sm:px-8"
+    >
       <div className="grid gap-6 sm:grid-cols-[1fr_auto] sm:gap-10">
         <div>
           {/* Result badge + date row */}
@@ -40,6 +44,6 @@ export default function AchievementItem({ item }: { item: Achievement }) {
           <span />
         )}
       </div>
-    </article>
+    </TiltCard>
   );
 }

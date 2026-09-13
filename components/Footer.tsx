@@ -50,20 +50,24 @@ export default function Footer() {
     { href: siteConfig.leetcode, label: "LeetCode", icon: <LeetCodeIcon /> },
   ];
 
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="mt-auto border-t border-border bg-card">
+    <footer className="mt-auto border-t border-border bg-background-alt">
       <div className="container-site flex flex-col items-start justify-between gap-6 py-10 sm:flex-row sm:items-center">
         <div className="space-y-1.5">
           <a
             href={`mailto:${siteConfig.email}`}
-            className="block text-sm text-muted transition-colors hover:text-accent"
+            className="block font-mono text-sm text-muted transition-colors hover:text-accent"
           >
             {siteConfig.email}
           </a>
-          <p className="text-sm text-muted/80">© 2026 {siteConfig.name}</p>
+          <p className="text-sm text-muted/70">
+            © {year} {siteConfig.name}
+          </p>
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           {socials.map((social) => (
             <a
               key={social.label}
@@ -71,7 +75,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={social.label}
-              className="text-muted transition-colors hover:text-accent"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
             >
               {social.icon}
             </a>

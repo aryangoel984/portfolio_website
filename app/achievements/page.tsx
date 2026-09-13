@@ -23,7 +23,7 @@ export default function AchievementsPage() {
         </header>
       </Reveal>
 
-      <div className="max-w-3xl divide-y-0 border-t border-border">
+      <div className="max-w-3xl">
         {achievements.map((item) => (
           <Reveal key={item.name}>
             <AchievementItem item={item} />

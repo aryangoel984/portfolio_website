@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SkillsSection from "@/components/SkillsSection";
 import Reveal from "@/components/Reveal";
+import TiltCard from "@/components/TiltCard";
 import { siteConfig } from "@/data/siteConfig";
 
 export const metadata: Metadata = {
@@ -37,7 +38,10 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <aside className="h-fit border border-border bg-card/70 p-6 sm:p-8">
+          <TiltCard
+            max={2}
+            className="h-fit rounded-xl border border-border bg-card p-6 sm:p-8"
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
               Currently
             </p>
@@ -82,7 +86,7 @@ export default function AboutPage() {
                 </dd>
               </div>
             </dl>
-          </aside>
+          </TiltCard>
         </div>
       </Reveal>
 

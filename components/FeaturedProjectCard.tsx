@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FeaturedProject } from "@/data/projects";
+import TiltCard from "@/components/TiltCard";
 
 export default function FeaturedProjectCard({
   project,
@@ -21,38 +22,40 @@ export default function FeaturedProjectCard({
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative block overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:-translate-y-0.5"
-          aria-label={`Open live demo of ${project.name}`}
-        >
-          <div className="flex items-center gap-3 border-b border-border bg-surface/80 px-4 py-2.5">
-            <div className="flex gap-1.5" aria-hidden="true">
-              <span className="h-2 w-2 rounded-full bg-[#d4dbe6]" />
-              <span className="h-2 w-2 rounded-full bg-[#d4dbe6]" />
-              <span className="h-2 w-2 rounded-full bg-[#d4dbe6]" />
-            </div>
-            <span className="truncate font-mono text-[11px] tracking-wide text-muted">
-              {displayUrl}
-            </span>
-          </div>
-          <div className="relative aspect-[16/10] w-full bg-surface">
-            <Image
-              src={project.screenshot}
-              alt={`${project.name} preview`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 58vw"
-              className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.015]"
-            />
-            <div className="absolute inset-0 flex items-end justify-start bg-accent/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span className="m-5 rounded-sm bg-white px-3.5 py-2 text-xs font-semibold tracking-wide text-accent">
-                View Live →
+        <TiltCard max={3} className="overflow-hidden rounded-lg border border-border bg-card">
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block"
+            aria-label={`Open live demo of ${project.name}`}
+          >
+            <div className="flex items-center gap-3 border-b border-border bg-surface/60 px-4 py-2.5">
+              <div className="flex gap-1.5" aria-hidden="true">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              <span className="truncate font-mono text-[11px] tracking-wide text-muted">
+                {displayUrl}
               </span>
             </div>
-          </div>
-        </a>
+            <div className="relative aspect-16/10 w-full bg-surface">
+              <Image
+                src={project.screenshot}
+                alt={`${project.name} preview`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.015]"
+              />
+              <div className="absolute inset-0 flex items-end justify-start bg-linear-to-t from-background/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span className="m-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-3.5 py-2 text-xs font-semibold tracking-wide text-background">
+                  View Live <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        </TiltCard>
       </div>
 
       <div
@@ -81,16 +84,23 @@ export default function FeaturedProjectCard({
           ))}
         </ul>
 
-        <p className="mt-6 text-sm font-medium uppercase tracking-[0.12em] text-muted">
-          {project.techStack.join("  ·  ")}
-        </p>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {project.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="skill-tag inline-flex items-center rounded-md border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground/80"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
 
         <div className="mt-7 flex flex-wrap items-center gap-5">
           <a
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+            className="inline-flex items-center rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-accent-hover"
           >
             Live Demo
           </a>

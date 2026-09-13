@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/data/siteConfig";
-import headshot from "@/public/images/headshot.jpg";
+import TiltCard from "@/components/TiltCard";
+import Magnetic from "@/components/Magnetic";
 
 /* ── Animated counter ────────────────────────────────────── */
 function AnimatedCounter({
@@ -24,28 +24,32 @@ function AnimatedCounter({
     const node = ref.current;
     if (!node) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setCount(end);
-      return;
-    }
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const step = 16;
-          const increment = end / (duration / step);
-          let current = 0;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(current));
-            }
-          }, step);
+        if (!entry.isIntersecting || started.current) return;
+        started.current = true;
+
+        if (reduceMotion) {
+          setCount(end);
+          return;
         }
+
+        const step = 16;
+        const increment = end / (duration / step);
+        let current = 0;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= end) {
+            setCount(end);
+            clearInterval(timer);
+          } else {
+            setCount(Math.floor(current));
+          }
+        }, step);
       },
       { threshold: 0.5 },
     );
@@ -62,7 +66,7 @@ function AnimatedCounter({
   );
 }
 
-/* ── Stat card ───────────────────────────────────────────── */
+/* ── Stat data ───────────────────────────────────────────── */
 const stats = [
   { value: 400, suffix: "+", label: "LeetCode Solved" },
   { value: 4, suffix: "×", label: "Hackathon Awards" },
@@ -70,30 +74,35 @@ const stats = [
   { value: 8, suffix: ".74", label: "CGPA at DTU" },
 ] as const;
 
+/* ── Terminal lines (same identity info, presented as output) */
+const terminalLines = [
+  { prompt: true, text: "whoami" },
+  { prompt: false, text: siteConfig.name },
+  { prompt: true, text: "cat role.txt" },
+  { prompt: false, text: siteConfig.targetRole },
+  { prompt: true, text: "status --current" },
+  { prompt: false, text: "Open to SDE & Full-Stack roles", accent: true },
+];
+
 /* ── Component ───────────────────────────────────────────── */
 export default function Hero() {
   return (
     <section className="hero-bg relative overflow-hidden border-b border-border">
-
       {/* Background decoration */}
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <div className="dot-grid absolute inset-0 opacity-40" />
-        {/* Soft glow blobs */}
-        <div className="animate-float absolute right-[6%] top-[10%] h-80 w-80 rounded-full bg-accent/5 blur-3xl" />
-        <div className="animate-float-slow absolute left-[2%] bottom-[15%] h-60 w-60 rounded-full bg-accent/4 blur-2xl" />
-        {/* Decorative rings */}
+        <div className="dot-grid absolute inset-0 opacity-30" />
+        <div className="animate-float absolute right-[6%] top-[10%] h-80 w-80 rounded-full bg-accent/10 blur-3xl" />
+        <div className="animate-float-slow absolute left-[2%] bottom-[15%] h-60 w-60 rounded-full bg-accent/5 blur-2xl" />
         <div className="animate-float absolute right-[10%] top-[18%] h-44 w-44 rounded-full border border-accent/10" />
-        <div className="animate-float-slow absolute right-[16%] top-[24%] h-72 w-72 rounded-full border border-accent/6" />
+        <div className="animate-float-slow absolute right-[16%] top-[24%] h-72 w-72 rounded-full border border-accent/5" />
       </div>
 
-      <div className="container-site relative grid items-center gap-12 py-16 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20 lg:py-28">
-
+      <div className="container-site relative grid items-center gap-14 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:py-28">
         {/* ── Left: text ───────────────────────────────────── */}
         <div className="max-w-2xl">
-
           {/* Open-to-work badge */}
           <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-accent/20 bg-accent-soft px-4 py-1.5">
             <span className="relative flex h-2 w-2" aria-hidden="true">
@@ -106,32 +115,37 @@ export default function Hero() {
           </div>
 
           <p className="page-eyebrow">{siteConfig.targetRole}</p>
-          <h1 className="mt-4 font-display text-5xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-[4.5rem]">
+          <h1 className="gradient-text mt-4 font-display text-5xl font-semibold leading-[1.08] tracking-tight sm:text-6xl lg:text-[4.5rem]">
             {siteConfig.name}
           </h1>
           <p className="mt-6 max-w-xl text-xl leading-relaxed text-muted sm:text-2xl [text-wrap:balance]">
             {siteConfig.tagline}
           </p>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-muted [text-wrap:pretty]">
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-muted/90 [text-wrap:pretty]">
             {siteConfig.intro}
           </p>
 
           {/* CTA row */}
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Link
-              href="/projects"
-              className="inline-flex items-center justify-center rounded-sm bg-accent px-6 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25"
-            >
-              View Projects
-            </Link>
-            <a
-              href={siteConfig.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center border-b border-accent/40 pb-0.5 text-sm font-semibold tracking-wide text-accent transition-colors hover:border-accent hover:text-accent-hover"
-            >
-              Download Resume
-            </a>
+            <Magnetic>
+              <Link
+                href="/projects"
+                className="magnetic inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold tracking-wide text-background transition-all duration-200 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25"
+              >
+                View Projects
+                <span aria-hidden="true">→</span>
+              </Link>
+            </Magnetic>
+            <Magnetic strength={0.25}>
+              <a
+                href={siteConfig.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="magnetic inline-flex items-center justify-center border-b border-accent/40 pb-0.5 text-sm font-semibold tracking-wide text-accent transition-colors hover:border-accent hover:text-accent-hover"
+              >
+                Download Resume
+              </a>
+            </Magnetic>
             <Link
               href="/contact"
               className="inline-flex items-center justify-center border-b border-transparent pb-0.5 text-sm font-medium tracking-wide text-muted transition-colors hover:border-muted hover:text-foreground"
@@ -145,7 +159,7 @@ export default function Hero() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="stat-card rounded-xl border border-border bg-card/90 px-3 py-4 text-center backdrop-blur-sm"
+                className="stat-card rounded-xl border border-border bg-card/80 px-3 py-4 text-center backdrop-blur-sm"
               >
                 <p className="font-display text-2xl font-bold tabular-nums text-accent">
                   <AnimatedCounter end={stat.value} suffix={stat.suffix} />
@@ -158,34 +172,56 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── Right: photo with floating badges ────────────── */}
-        <div className="mx-auto w-full max-w-[340px] lg:max-w-[400px]">
-          <div className="relative">
-            {/* Gradient halo behind photo */}
-            <div
-              className="absolute -inset-4 rounded-[2rem] blur-2xl"
-              style={{
-                background:
-                  "radial-gradient(ellipse at 50% 50%, rgba(22,58,95,0.16) 0%, transparent 70%)",
-              }}
-              aria-hidden="true"
-            />
+        {/* ── Right: interactive terminal card ──────────────── */}
+        <div className="mx-auto w-full max-w-[440px]">
+          <TiltCard max={4}>
+            <div className="terminal-window">
+              <div className="flex items-center gap-2 border-b border-border bg-surface/60 px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                <span className="ml-3 truncate font-mono text-[11px] tracking-wide text-muted">
+                  aryan@dtu — zsh
+                </span>
+              </div>
 
-            {/* Photo card */}
-            <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-surface shadow-2xl shadow-accent/10">
-              <Image
-                src={headshot}
-                alt={`${siteConfig.name}, Software Engineer`}
-                width={1122}
-                height={1402}
-                priority
-                sizes="(max-width: 1024px) 340px, 400px"
-                className="h-auto w-full object-cover object-top"
-              />
+              <div className="grid-pattern space-y-3 p-6 font-mono text-[0.83rem] leading-relaxed">
+                {terminalLines.map((line, i) => (
+                  <p
+                    key={i}
+                    className="animate-fade-in-up"
+                    style={{ animationDelay: `${i * 140}ms` }}
+                  >
+                    {line.prompt ? (
+                      <>
+                        <span className="text-emerald-400">➜</span>{" "}
+                        <span className="text-accent">~</span>{" "}
+                        <span className="text-foreground">{line.text}</span>
+                      </>
+                    ) : (
+                      <span
+                        className={
+                          line.accent
+                            ? "font-semibold text-accent"
+                            : "text-muted"
+                        }
+                      >
+                        {line.text}
+                      </span>
+                    )}
+                  </p>
+                ))}
+                <p className="text-emerald-400">
+                  ➜ <span className="text-accent">~</span>{" "}
+                  <span className="animate-caret text-foreground">▍</span>
+                </p>
+              </div>
             </div>
+          </TiltCard>
 
-            {/* Floating badge: University */}
-            <div className="float-badge absolute -bottom-5 -left-5 max-w-[180px] rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl shadow-foreground/8">
+          {/* Floating badges */}
+          <div className="float-badge relative mt-4 flex flex-wrap gap-3">
+            <div className="rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl shadow-black/20">
               <p className="text-[0.7rem] font-bold leading-snug text-foreground">
                 Delhi Technological University
               </p>
@@ -193,9 +229,7 @@ export default function Hero() {
                 B.Tech IT · 2023 to 2027
               </p>
             </div>
-
-            {/* Floating badge: Internship */}
-            <div className="float-badge-alt absolute -right-5 -top-5 rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl shadow-foreground/8">
+            <div className="float-badge-alt rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl shadow-black/20">
               <p className="text-[0.7rem] font-bold leading-snug text-foreground">
                 AiRo Digital Labs
               </p>

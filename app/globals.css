@@ -1,27 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f7fb;
-  --foreground: #0f1c2e;
-  --muted: #5a6a7e;
-  --border: #d5dde8;
-  --card: #ffffff;
-  --accent: #163a5f;
-  --accent-hover: #0f2c49;
-  --accent-soft: #e4eef8;
-  --surface: #e8eef5;
-  --ring: #163a5f;
+  --background: #05070c;
+  --background-alt: #0a0e17;
+  --foreground: #edf1f7;
+  --muted: #8a96a8;
+  --muted-2: #5b6576;
+  --border: #1c2330;
+  --border-hover: #2c3648;
+  --card: #0d121c;
+  --card-hover: #10161f;
+  --accent: #4fc8ff;
+  --accent-hover: #86dbff;
+  --accent-strong: #1ea7e6;
+  --accent-soft: rgba(79, 200, 255, 0.1);
+  --accent-soft-hover: rgba(79, 200, 255, 0.16);
+  --surface: #111826;
+  --ring: #4fc8ff;
   --space-section: clamp(4rem, 8vw, 7rem);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
   --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
   --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-strong: var(--accent-strong);
   --color-accent-soft: var(--accent-soft);
   --color-surface: var(--surface);
   --color-ring: var(--ring);
@@ -33,6 +44,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 18px;
+  color-scheme: dark;
 }
 
 body {
@@ -48,13 +60,37 @@ body {
   color: var(--accent);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-2);
+}
+
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 .container-site {
@@ -86,11 +122,23 @@ body {
 }
 
 .page-eyebrow {
-  font-size: 0.8125rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.page-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.1rem;
+  height: 1px;
+  background: var(--accent);
 }
 
 .page-title {
@@ -110,9 +158,10 @@ body {
   color: var(--muted);
 }
 
+/* ── Reveal-on-scroll ────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(18px);
   transition:
     opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -128,10 +177,12 @@ body {
     scroll-behavior: auto;
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .reveal,
+  .tilt-card,
+  .magnetic {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -155,6 +206,27 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes gradient-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(600%); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Animation utilities ─────────────────────────────────── */
 .animate-float {
   animation: float 5s ease-in-out infinite;
@@ -168,31 +240,135 @@ body {
   animation: ping-beacon 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
+.animate-caret {
+  animation: blink-caret 0.9s step-end infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* ── Hero background ─────────────────────────────────────── */
 .hero-bg {
   background-color: var(--background);
   background-image:
-    radial-gradient(ellipse at 18% 28%, rgba(22, 58, 95, 0.08) 0%, transparent 58%),
-    radial-gradient(ellipse at 82% 78%, rgba(22, 58, 95, 0.06) 0%, transparent 52%);
+    radial-gradient(ellipse at 15% 20%, rgba(79, 200, 255, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(79, 200, 255, 0.07) 0%, transparent 50%);
 }
 
 /* Subtle dot-grid overlay */
 .dot-grid {
-  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--border-hover) 1px, transparent 1px);
   background-size: 28px 28px;
+}
+
+/* Fine graph-paper style grid for panels */
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Gradient text ───────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(100deg, var(--foreground) 20%, var(--accent) 60%, var(--foreground) 90%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}
+
+/* ── Ambient cursor glow (global) ───────────────────────────*/
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    500px circle at var(--x, 50%) var(--y, 50%),
+    rgba(79, 200, 255, 0.06),
+    transparent 70%
+  );
+}
+
+.cursor-glow.is-active {
+  opacity: 1;
+}
+
+/* ── Scroll progress bar ─────────────────────────────────── */
+.scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  background: transparent;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--accent-strong), var(--accent), var(--accent-hover));
+  box-shadow: 0 0 8px rgba(79, 200, 255, 0.6);
+  transform-origin: left;
+}
+
+/* ── Tilt cards (3D hover) ───────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+}
+
+.tilt-card:hover,
+.tilt-card:focus-within {
+  border-color: var(--border-hover);
+  box-shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border-hover);
+}
+
+.tilt-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(79, 200, 255, 0.12),
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.tilt-card:hover .tilt-card-glow,
+.tilt-card:focus-within .tilt-card-glow {
+  opacity: 1;
 }
 
 /* ── Stat cards (hero) ───────────────────────────────────── */
 .stat-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(22, 58, 95, 0.13);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 28px -10px rgba(79, 200, 255, 0.18);
 }
 
-/* ── Floating badges (hero photo) ───────────────────────── */
+/* ── Floating badges ─────────────────────────────────────── */
 .float-badge {
   animation: float-slow 6s ease-in-out infinite;
 }
@@ -203,12 +379,13 @@ body {
 
 /* ── Enhanced card hover ─────────────────────────────────── */
 .card-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(22, 58, 95, 0.10);
+  border-color: var(--border-hover);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Skill tags ──────────────────────────────────────────── */
@@ -218,7 +395,34 @@ body {
 
 .skill-tag:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(22, 58, 95, 0.10);
+  box-shadow: 0 4px 14px rgba(79, 200, 255, 0.15);
+}
+
+/* ── Magnetic buttons ────────────────────────────────────── */
+.magnetic {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* ── Terminal window chrome ──────────────────────────────── */
+.terminal-window {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.6);
+}
+
+.terminal-window::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(79, 200, 255, 0.5), transparent);
+  animation: scan-line 5s linear infinite;
 }
 
 /* ── Section dividers with gradient fade ─────────────────── */
@@ -226,4 +430,13 @@ body {
   border: none;
   height: 1px;
   background: linear-gradient(to right, transparent, var(--border) 20%, var(--border) 80%, transparent);
+}
+
+/* ── Back-to-top button ──────────────────────────────────── */
+.back-to-top {
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+}
+
+.back-to-top:hover {
+  box-shadow: 0 10px 25px -8px rgba(79, 200, 255, 0.35);
 }
