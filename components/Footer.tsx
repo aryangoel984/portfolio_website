@@ -75,7 +75,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={social.label}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
             >
               {social.icon}
             </a>

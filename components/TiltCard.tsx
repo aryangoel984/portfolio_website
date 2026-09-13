@@ -5,10 +5,10 @@ import { useEffect, useRef } from "react";
 export default function TiltCard({
   children,
   className = "",
-  max = 6,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** @deprecated tilt motion was removed; kept so existing call sites don't need edits */
   max?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,7 +16,6 @@ export default function TiltCard({
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     let frame = 0;
@@ -28,29 +27,18 @@ export default function TiltCard({
 
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        const rotateY = (px - 0.5) * max * 2;
-        const rotateX = (0.5 - py) * max * 2;
-        node!.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
         node!.style.setProperty("--mx", `${px * 100}%`);
         node!.style.setProperty("--my", `${py * 100}%`);
       });
     }
 
-    function handleLeave() {
-      cancelAnimationFrame(frame);
-      node!.style.transform =
-        "perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0)";
-    }
-
     node.addEventListener("pointermove", handleMove);
-    node.addEventListener("pointerleave", handleLeave);
 
     return () => {
       node.removeEventListener("pointermove", handleMove);
-      node.removeEventListener("pointerleave", handleLeave);
       cancelAnimationFrame(frame);
     };
-  }, [max]);
+  }, []);
 
   return (
     <div ref={ref} className={`tilt-card relative ${className}`}>
